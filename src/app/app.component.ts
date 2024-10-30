@@ -40,17 +40,18 @@ export class AppComponent {
       this.bigSize = (window.innerWidth / 2) as number;
     }
     this.startedGame = true;
-    this.circles = this.createCircles(10, this.bigSize, window.innerHeight * 0.2);
+    this.circles = this.createCircles(1, this.bigSize, window.innerHeight * 0.2);
     this.circles[0].visible = true;
-
+    this.lastTime = Date.now();
   }
 
   private startSmallCircles() {
     this.bigCircles = [...this.circles];
     this.isPlaying = true;
     this.idCounter = 0;
-    this.circles = this.createCircles(10, this.smallSize);
+    this.circles = this.createCircles(1, this.smallSize);
     this.circles[0].visible = true;
+    this.lastTime = Date.now();
   }
 
   private createCircles(count: number, size: number, marginTop: number = 0, marginBot: number = 0): CircleData[] {
@@ -119,14 +120,11 @@ export class AppComponent {
     if (!this.isNextCircle(id)) return;
     let clickedCircle = this.circles.find(circle => circle.id === id)
     let time = Date.now()
-    if (id !== 0) { //first circle
-      clickedCircle.timeClicked = time - this.lastTime;
-    }
+    clickedCircle.timeClicked = time - this.lastTime;
     this.lastTime = time;
     clickedCircle.gotClicked = true;
 
     if (id === this.circles.length - 1) {
-      this.endTime = Date.now();
       this.hasFinishedBigCircles ? this.hasFinishedSmallCircles = true : this.hasFinishedBigCircles = true;
       this.isPlaying = false;
       if (this.hasFinishedSmallCircles) this.createResult();
@@ -149,12 +147,12 @@ export class AppComponent {
     let bigCircleAVGTime = 0;
     this.bigCircles.forEach(circle => bigCircleAVGTime += circle.timeClicked);
     console.log(bigCircleAVGTime)
-    bigCircleAVGTime = bigCircleAVGTime / this.bigCircles.length - 1;
+    bigCircleAVGTime = bigCircleAVGTime / this.bigCircles.length;
     console.log(bigCircleAVGTime)
     this.result.bigCirclesAVGTime = bigCircleAVGTime;
     let smallCirclesAVGTime = 0;
     this.circles.forEach(circle => smallCirclesAVGTime += circle.timeClicked);
-    smallCirclesAVGTime = smallCirclesAVGTime / this.circles.length - 1;
+    smallCirclesAVGTime = smallCirclesAVGTime / this.circles.length;
     this.result.smallCirclesAVGTime = smallCirclesAVGTime;
     this.finishedGame = true;
   }
