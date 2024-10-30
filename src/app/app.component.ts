@@ -40,7 +40,7 @@ export class AppComponent {
       this.bigSize = (window.innerWidth / 2) as number;
     }
     this.startedGame = true;
-    this.circles = this.createCircles(1, this.bigSize, window.innerHeight * 0.2);
+    this.circles = this.createCircles(10, this.bigSize, window.innerHeight * 0.2);
     this.circles[0].visible = true;
     this.lastTime = Date.now();
   }
@@ -49,7 +49,7 @@ export class AppComponent {
     this.bigCircles = [...this.circles];
     this.isPlaying = true;
     this.idCounter = 0;
-    this.circles = this.createCircles(1, this.smallSize);
+    this.circles = this.createCircles(10, this.smallSize);
     this.circles[0].visible = true;
     this.lastTime = Date.now();
   }
